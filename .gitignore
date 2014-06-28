@@ -5,4 +5,7 @@
 # http://guides.cocoapods.org/using/using-cocoapods.html#should-i-ignore-the-pods-directory-in-source-control?
 #
 # Pods/
-
+.DS_Store
+Example/WaterFallCollection/WaterFallCollection.xcodeproj/xcuserdata/*
+Example/WaterFallCollection/WaterFallCollection.xcodeproj/project.xcworkspace/xcuserdata/*
+HPCollectionLayout.xcworkspace/xcuserdata/*

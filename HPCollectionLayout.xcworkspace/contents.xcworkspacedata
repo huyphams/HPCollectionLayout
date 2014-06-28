@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workspace
+   version = "1.0">
+   <Group
+      location = "container:"
+      name = "Class">
+      <FileRef
+         location = "group:Class/HPCollectionLayout.h">
+      </FileRef>
+      <FileRef
+         location = "group:Class/HPCollectionLayout.m">
+      </FileRef>
+   </Group>
+</Workspace>
