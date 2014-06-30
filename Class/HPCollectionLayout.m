@@ -11,7 +11,6 @@
 NSString *const KindSectionHeader = @"KindSectionHeader";
 NSString *const KindSectionFooter = @"KindSectionFooter";
 
-
 @interface HPCollectionLayout ()
 
 @property (nonatomic, weak) id <HPCollectionLayoutDelegate> delegate;
@@ -170,8 +169,8 @@ const NSInteger unionSize = 20;
     if (numberOfSections == 0) {
         return;
     }
-    // Checking something haha
     
+    // Checking something haha
     NSAssert([self.delegate conformsToProtocol:@protocol(HPCollectionLayoutDelegate)], @"UICollectionView's delegate should conform to HPCollectionLayoutDelegate protocol");
     NSAssert(self.columnCount > 0, @"HPCollectionLayout's columnCount should be greater than 0, what wrong with your mind ???");
 
@@ -215,6 +214,7 @@ const NSInteger unionSize = 20;
 
         // total width
         CGFloat width = self.collectionView.frame.size.width - sectionInset.left - sectionInset.right;
+        
         //column width
         CGFloat itemWidth = floorf((width - (self.columnCount - 1) * self.minimumColumnSpacing) / self.columnCount);
 
@@ -411,6 +411,5 @@ const NSInteger unionSize = 20;
     
     return index;
 }
-
 
 @end

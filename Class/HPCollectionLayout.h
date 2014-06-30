@@ -89,5 +89,4 @@
 
 @property (nonatomic, assign) CGFloat footerHeight;
 
-
 @end
