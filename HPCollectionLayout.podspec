@@ -10,9 +10,8 @@ Pod::Spec.new do |s|
   s.author             = { "Huy Pham" => "duchuykun@gmail.com" }
   s.social_media_url   = "https://facebook.com/huyphams"
   s.platform     = :ios, "6.0"
-  s.source       = { :git => "http://github.com/huyphams/HPCollectionLayout.git", :tag => "#{s.version}" }
+  s.source       = { :git => "https://github.com/huyphams/HPCollectionLayout.git", :tag => "#{s.version}" }
   s.source_files  = "Class/*.{h,m}"
   s.requires_arc = true
 
 end
-

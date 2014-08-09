@@ -14,7 +14,7 @@
 
 @optional
 
-/*
+/**
 
  - Config header height
  
@@ -22,7 +22,7 @@
 
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout heightForHeaderInSection:(NSInteger)section;
 
-/*
+/**
  
  - Config footer height
  
@@ -30,7 +30,7 @@
 
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout heightForFooterInSection:(NSInteger)section;
 
-/*
+/**
  
  - Config inset for Section At index path
  
@@ -38,7 +38,7 @@
 
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section;
 
-/*
+/**
  
  - Config inset for minimum items spacing
  
@@ -48,7 +48,7 @@
 
 @required
 
-/* 
+/**
 
  - Config Size for item at index path
  
