@@ -8,6 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
+extern NSString *const KindSectionHeader;
+extern NSString *const KindSectionFooter;
+
 @class HPCollectionLayout;
 
 @protocol HPCollectionLayoutDelegate <UICollectionViewDelegate>
