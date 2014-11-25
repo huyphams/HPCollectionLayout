@@ -32,8 +32,15 @@ const NSInteger unionSize = 20;
 
 #pragma mark - Init
 
-- (void)setColumnCount:(NSInteger)columnCount
-{
+- (instancetype)init {
+    if (!(self = [super init])) {
+        return nil;
+    }
+    [self commonInit];
+    return self;
+}
+
+- (void)setColumnCount:(NSInteger)columnCount {
     if (_columnCount != columnCount) {
         _columnCount = columnCount;
         [self invalidateLayout];
@@ -45,48 +52,43 @@ const NSInteger unionSize = 20;
   set up component and reload
  
 */
-- (void)setMinimumColumnSpacing:(CGFloat)minimumColumnSpacing
-{
+
+- (void)setMinimumColumnSpacing:(CGFloat)minimumColumnSpacing {
     if (_minimumColumnSpacing != minimumColumnSpacing) {
         _minimumColumnSpacing = minimumColumnSpacing;
         [self invalidateLayout];
     }
 }
 
-- (void)setMinimumInteritemSpacing:(CGFloat)minimumInteritemSpacing
-{
+- (void)setMinimumInteritemSpacing:(CGFloat)minimumInteritemSpacing {
     if (_minimumInteritemSpacing != minimumInteritemSpacing) {
         _minimumInteritemSpacing = minimumInteritemSpacing;
         [self invalidateLayout];
     }
 }
 
-- (void)setHeaderHeight:(CGFloat)headerHeight
-{
+- (void)setHeaderHeight:(CGFloat)headerHeight {
     if (_headerHeight != headerHeight) {
         _headerHeight = headerHeight;
         [self invalidateLayout];
     }
 }
 
-- (void)setFooterHeight:(CGFloat)footerHeight
-{
+- (void)setFooterHeight:(CGFloat)footerHeight {
     if (_footerHeight != footerHeight) {
         _footerHeight = footerHeight;
         [self invalidateLayout];
     }
 }
 
-- (void)setSectionInset:(UIEdgeInsets)sectionInset
-{
+- (void)setSectionInset:(UIEdgeInsets)sectionInset {
     if (!UIEdgeInsetsEqualToEdgeInsets(_sectionInset, sectionInset)) {
         _sectionInset = sectionInset;
         [self invalidateLayout];
     }
 }
 
-- (CGFloat)itemWidthInSectionAtIndex:(NSInteger)section
-{
+- (CGFloat)itemWidthInSectionAtIndex:(NSInteger)section {
     UIEdgeInsets sectionInset;
     if ([self.delegate respondsToSelector:@selector(collectionView:layout:insetForSectionAtIndex:)]) {
         sectionInset = [self.delegate collectionView:self.collectionView layout:self insetForSectionAtIndex:section];
@@ -98,56 +100,49 @@ const NSInteger unionSize = 20;
 }
 
 #pragma mark - Private Accessors
-- (NSMutableDictionary *)headersAttribute
-{
+- (NSMutableDictionary *)headersAttribute {
     if (!_headersAttribute) {
         _headersAttribute = [NSMutableDictionary dictionary];
     }
     return _headersAttribute;
 }
 
-- (NSMutableDictionary *)footersAttribute
-{
+- (NSMutableDictionary *)footersAttribute {
     if (!_footersAttribute) {
         _footersAttribute = [NSMutableDictionary dictionary];
     }
     return _footersAttribute;
 }
 
-- (NSMutableArray *)unionRects
-{
+- (NSMutableArray *)unionRects {
     if (!_unionRects) {
         _unionRects = [NSMutableArray array];
     }
     return _unionRects;
 }
 
-- (NSMutableArray *)columnHeights
-{
+- (NSMutableArray *)columnHeights {
     if (!_columnHeights) {
         _columnHeights = [NSMutableArray array];
     }
     return _columnHeights;
 }
 
-- (NSMutableArray *)allItemAttributes
-{
+- (NSMutableArray *)allItemAttributes {
     if (!_allItemAttributes) {
         _allItemAttributes = [NSMutableArray array];
     }
     return _allItemAttributes;
 }
 
-- (NSMutableArray *)sectionItemAttributes
-{
+- (NSMutableArray *)sectionItemAttributes {
     if (!_sectionItemAttributes) {
         _sectionItemAttributes = [NSMutableArray array];
     }
     return _sectionItemAttributes;
 }
 
-- (id<HPCollectionLayoutDelegate>)delegate
-{
+- (id<HPCollectionLayoutDelegate>)delegate {
     return (id<HPCollectionLayoutDelegate>)self.collectionView.delegate;
 }
 
@@ -156,8 +151,8 @@ const NSInteger unionSize = 20;
  - Init default value.
  
  */
-- (void)commonInit
-{
+
+- (void)commonInit {
     _columnCount = 2;
     _minimumColumnSpacing = 10;
     _minimumInteritemSpacing = 10;
@@ -166,26 +161,15 @@ const NSInteger unionSize = 20;
     _sectionInset = UIEdgeInsetsZero;
 }
 
-- (instancetype)init
-{
-    if (!(self = [super init])) {
-        return nil;
-    }
-    [self commonInit];
-    return self;
-}
-
-- (void)prepareLayout
-{
+- (void)prepareLayout {
     [super prepareLayout];
     NSInteger numberOfSections = [self.collectionView numberOfSections];
     if (numberOfSections == 0) {
         return;
     }
     
-    // Checking something haha
     NSAssert([self.delegate conformsToProtocol:@protocol(HPCollectionLayoutDelegate)], @"UICollectionView's delegate should conform to HPCollectionLayoutDelegate protocol");
-    NSAssert(self.columnCount > 0, @"HPCollectionLayout's columnCount should be greater than 0, what wrong with your mind ???");
+    NSAssert(self.columnCount > 0, @"HPCollectionLayout's columnCount should be greater than 0, what wrong with you?");
 
     NSInteger idx = 0;
     
@@ -205,8 +189,8 @@ const NSInteger unionSize = 20;
     
     for (NSInteger section = 0; section < numberOfSections; ++section) {
         
-        // set section inset
-        // if protocol minimumInteritemSpacingForSectionAtIndex not implement default is self.sectionInset
+        // Set section inset
+        // If protocol minimumInteritemSpacingForSectionAtIndex not implement default is self.sectionInset
         UIEdgeInsets sectionInset;
         if ([self.delegate respondsToSelector:@selector(collectionView:layout:insetForSectionAtIndex:)]) {
             sectionInset = [self.delegate collectionView:self.collectionView layout:self insetForSectionAtIndex:section];
@@ -214,8 +198,8 @@ const NSInteger unionSize = 20;
             sectionInset = self.sectionInset;
         }
         
-        // set minimum inter item spacing
-        // if protocol minimumInteritemSpacingForSectionAtIndex not implement default is self.minimumInteritemSpacing
+        // Set minimum inter item spacing
+        // If protocol minimumInteritemSpacingForSectionAtIndex not implement default is self.minimumInteritemSpacing
         CGFloat minimumInteritemSpacing;
         if ([self.delegate respondsToSelector:@selector(collectionView:layout:minimumInteritemSpacingForSectionAtIndex:)]) {
             minimumInteritemSpacing = [self.delegate collectionView:self.collectionView layout:self minimumInteritemSpacingForSectionAtIndex:section];
@@ -223,10 +207,10 @@ const NSInteger unionSize = 20;
             minimumInteritemSpacing = self.minimumInteritemSpacing;
         }
 
-        // total width
+        // Total width
         CGFloat width = self.collectionView.frame.size.width - sectionInset.left - sectionInset.right;
         
-        //column width
+        // Column width
         CGFloat itemWidth = floorf((width - (self.columnCount - 1) * self.minimumColumnSpacing) / self.columnCount);
 
         // SECTION HEADER
@@ -312,8 +296,7 @@ const NSInteger unionSize = 20;
     }
 }
 
-- (CGSize)collectionViewContentSize
-{
+- (CGSize)collectionViewContentSize {
     NSInteger numberOfSections = [self.collectionView numberOfSections];
     if (numberOfSections == 0) {
         return CGSizeZero;
@@ -325,8 +308,7 @@ const NSInteger unionSize = 20;
     return contentSize;
 }
 
-- (UICollectionViewLayoutAttributes *)layoutAttributesForItemAtIndexPath:(NSIndexPath *)path
-{
+- (UICollectionViewLayoutAttributes *)layoutAttributesForItemAtIndexPath:(NSIndexPath *)path {
     if (path.section >= [self.sectionItemAttributes count]) {
         return nil;
     }
@@ -336,8 +318,8 @@ const NSInteger unionSize = 20;
     return (self.sectionItemAttributes[path.section])[path.item];
 }
 
-- (UICollectionViewLayoutAttributes *)layoutAttributesForSupplementaryViewOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
-{
+- (UICollectionViewLayoutAttributes *)layoutAttributesForSupplementaryViewOfKind:(NSString *)kind
+                                                                     atIndexPath:(NSIndexPath *)indexPath {
     UICollectionViewLayoutAttributes *attribute = nil;
     if ([kind isEqualToString:KindSectionHeader]) {
         attribute = self.headersAttribute[@(indexPath.section)];
@@ -347,8 +329,7 @@ const NSInteger unionSize = 20;
     return attribute;
 }
 
-- (NSArray *)layoutAttributesForElementsInRect:(CGRect)rect
-{
+- (NSArray *)layoutAttributesForElementsInRect:(CGRect)rect {
     NSInteger i;
     NSInteger begin = 0, end = self.unionRects.count;
     NSMutableArray *attrs = [NSMutableArray array];
@@ -375,8 +356,7 @@ const NSInteger unionSize = 20;
     return [NSArray arrayWithArray:attrs];
 }
 
-- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)newBounds
-{
+- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)newBounds {
     CGRect oldBounds = self.collectionView.bounds;
     if (CGRectGetWidth(newBounds) != CGRectGetWidth(oldBounds)) {
         return YES;
@@ -384,8 +364,7 @@ const NSInteger unionSize = 20;
     return NO;
 }
 
-- (NSUInteger)shortestColumnIndex
-{
+- (NSUInteger)shortestColumnIndex {
     __block NSUInteger index = 0;
     __block CGFloat shortestHeight = MAXFLOAT;
     
@@ -400,14 +379,12 @@ const NSInteger unionSize = 20;
     return index;
 }
 
-- (NSUInteger)nextColumnIndexForItem:(NSInteger)item
-{
+- (NSUInteger)nextColumnIndexForItem:(NSInteger)item {
     NSUInteger index = [self shortestColumnIndex];
     return index;
 }
 
-- (NSUInteger)longestColumnIndex
-{
+- (NSUInteger)longestColumnIndex {
     __block NSUInteger index = 0;
     __block CGFloat longestHeight = 0;
     
