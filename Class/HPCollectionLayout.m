@@ -31,7 +31,6 @@ const NSInteger unionSize = 20;
 #pragma mark - Public Method
 
 #pragma mark - Init
-
 - (void)setColumnCount:(NSInteger)columnCount {
     
     if (_columnCount != columnCount) {
@@ -40,10 +39,8 @@ const NSInteger unionSize = 20;
     }
 }
 
-/*
- 
-  set up component and reload
- 
+/**
+* Set up component and reload
 */
 - (void)setMinimumColumnSpacing:(CGFloat)minimumColumnSpacing {
     
@@ -152,9 +149,7 @@ const NSInteger unionSize = 20;
 }
 
 /**
- 
- - Init default value.
- 
+ * Init default value.
  */
 - (void)commonInit {
     
@@ -205,8 +200,8 @@ const NSInteger unionSize = 20;
     
     for (NSInteger section = 0; section < numberOfSections; ++section) {
         
-        // set section inset
-        // if protocol minimumInteritemSpacingForSectionAtIndex not implement default is self.sectionInset
+        // Set section inset
+        // If protocol minimumInteritemSpacingForSectionAtIndex not implement default is self.sectionInset
         UIEdgeInsets sectionInset;
         if ([self.delegate respondsToSelector:@selector(collectionView:layout:insetForSectionAtIndex:)]) {
             sectionInset = [self.delegate collectionView:self.collectionView layout:self insetForSectionAtIndex:section];
@@ -214,8 +209,8 @@ const NSInteger unionSize = 20;
             sectionInset = self.sectionInset;
         }
         
-        // set minimum inter item spacing
-        // if protocol minimumInteritemSpacingForSectionAtIndex not implement default is self.minimumInteritemSpacing
+        // Set minimum inter item spacing
+        // If protocol minimumInteritemSpacingForSectionAtIndex not implement default is self.minimumInteritemSpacing
         CGFloat minimumInteritemSpacing;
         if ([self.delegate respondsToSelector:@selector(collectionView:layout:minimumInteritemSpacingForSectionAtIndex:)]) {
             minimumInteritemSpacing = [self.delegate collectionView:self.collectionView layout:self minimumInteritemSpacingForSectionAtIndex:section];
@@ -223,10 +218,10 @@ const NSInteger unionSize = 20;
             minimumInteritemSpacing = self.minimumInteritemSpacing;
         }
 
-        // total width
+        // Total width
         CGFloat width = self.collectionView.frame.size.width - sectionInset.left - sectionInset.right;
         
-        //column width
+        // Column width
         CGFloat itemWidth = floorf((width - (self.columnCount - 1) * self.minimumColumnSpacing) / self.columnCount);
 
         // SECTION HEADER
