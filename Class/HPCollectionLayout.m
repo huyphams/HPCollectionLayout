@@ -31,13 +31,6 @@ const NSInteger unionSize = 20;
 #pragma mark - Public Method
 
 #pragma mark - Init
-- (void)setColumnCount:(NSInteger)columnCount {
-    
-    if (_columnCount != columnCount) {
-        _columnCount = columnCount;
-        [self invalidateLayout];
-    }
-}
 
 /**
 * Set up component and reload
@@ -91,7 +84,8 @@ const NSInteger unionSize = 20;
         sectionInset = self.sectionInset;
     }
     CGFloat width = self.collectionView.frame.size.width - sectionInset.left - sectionInset.right;
-    return floorf((width - (self.columnCount - 1) * self.minimumColumnSpacing) / self.columnCount);
+    NSInteger columnCount = [self.delegate collectionView:self.collectionView layout:self numberOfColumnForSection:section];
+    return floorf((width - (columnCount - 1) * self.minimumColumnSpacing) / columnCount);
 }
 
 #pragma mark - Private Accessors
@@ -153,7 +147,6 @@ const NSInteger unionSize = 20;
  */
 - (void)commonInit {
     
-    _columnCount = 2;
     _minimumColumnSpacing = 10;
     _minimumInteritemSpacing = 10;
     _headerHeight = 0;
@@ -179,22 +172,16 @@ const NSInteger unionSize = 20;
     }
     
     // Checking something haha
-    NSAssert([self.delegate conformsToProtocol:@protocol(HPCollectionLayoutDelegate)], @"UICollectionView's delegate should conform to HPCollectionLayoutDelegate protocol");
-    NSAssert(self.columnCount > 0, @"HPCollectionLayout's columnCount should be greater than 0, what wrong with your mind ???");
-
+    NSAssert([self.delegate conformsToProtocol:@protocol(HPCollectionLayoutDelegate)], @"UICollectionView's delegate should conform to HPCollectionLayoutDelegate protocol.");
+    
     NSInteger idx = 0;
     
     [self.headersAttribute removeAllObjects];
     [self.footersAttribute removeAllObjects];
     [self.unionRects removeAllObjects];
-    [self.columnHeights removeAllObjects];
     [self.allItemAttributes removeAllObjects];
     [self.sectionItemAttributes removeAllObjects];
     
-    for (idx = 0; idx < self.columnCount; idx++) {
-        [self.columnHeights addObject:@(0)];
-    }
-
     CGFloat top = 0;
     UICollectionViewLayoutAttributes *attributes;
     
@@ -220,9 +207,15 @@ const NSInteger unionSize = 20;
 
         // Total width
         CGFloat width = self.collectionView.frame.size.width - sectionInset.left - sectionInset.right;
+        NSInteger columnCount = [self.delegate collectionView:self.collectionView layout:self numberOfColumnForSection:section];
         
+        [self.columnHeights removeAllObjects];
+        for (idx = 0; idx < columnCount; idx++) {
+            [self.columnHeights addObject:@(0)];
+        }
+
         // Column width
-        CGFloat itemWidth = floorf((width - (self.columnCount - 1) * self.minimumColumnSpacing) / self.columnCount);
+        CGFloat itemWidth = floorf((width - (columnCount - 1) * self.minimumColumnSpacing) / columnCount);
 
         // SECTION HEADER
         CGFloat headerHeight;
@@ -241,7 +234,7 @@ const NSInteger unionSize = 20;
         }
     
         top += sectionInset.top;
-        for (idx = 0; idx < self.columnCount; idx++) {
+        for (idx = 0; idx < columnCount; idx++) {
             self.columnHeights[idx] = @(top);
         }
         
@@ -290,7 +283,7 @@ const NSInteger unionSize = 20;
             top = CGRectGetMaxY(attributes.frame);
         }
         
-        for (idx = 0; idx < self.columnCount; idx++) {
+        for (idx = 0; idx < columnCount; idx++) {
             self.columnHeights[idx] = @(top);
         }
         

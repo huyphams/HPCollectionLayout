@@ -1,6 +1,6 @@
 //
 //  HPCollectionLayout.h
-//  
+//
 //
 //  Created by Huy Pham on 6/27/14.
 //
@@ -18,10 +18,10 @@ extern NSString *const KindSectionFooter;
 @optional
 
 /**
-
+ 
  - Config header height
  
-*/
+ */
 
 - (CGFloat)collectionView:(UICollectionView *)collectionView
                    layout:(UICollectionViewLayout *)collectionViewLayout
@@ -60,7 +60,7 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger)section;
 @required
 
 /**
-
+ 
  - Config Size for item at index path
  
  */
@@ -69,14 +69,19 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger)section;
                   layout:(UICollectionViewLayout *)collectionViewLayout
   sizeForItemAtIndexPath:(NSIndexPath *)indexPath;
 
+/**
+ 
+ - Config number of column in setion
+ 
+ */
+
+- (NSInteger)collectionView:(UICollectionView *)collectionView
+                     layout:(UICollectionViewLayout *)collectionViewLayout
+   numberOfColumnForSection:(NSInteger)section;
+
 @end
 
 @interface HPCollectionLayout : UICollectionViewLayout
-
-// Number of colum in this layout
-// Default is 2
-
-@property (nonatomic, assign) NSInteger columnCount;
 
 // Colum spacing
 // Default is 10
