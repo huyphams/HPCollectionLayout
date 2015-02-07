@@ -181,21 +181,23 @@ const NSInteger unionSize = 20;
     [self.unionRects removeAllObjects];
     [self.allItemAttributes removeAllObjects];
     [self.sectionItemAttributes removeAllObjects];
-    
+  
     CGFloat top = 0;
     UICollectionViewLayoutAttributes *attributes;
     
     for (NSInteger section = 0; section < numberOfSections; ++section) {
-        
+      
         // Set section inset
         // If protocol minimumInteritemSpacingForSectionAtIndex not implement default is self.sectionInset
         UIEdgeInsets sectionInset;
+  
         if ([self.delegate respondsToSelector:@selector(collectionView:layout:insetForSectionAtIndex:)]) {
             sectionInset = [self.delegate collectionView:self.collectionView layout:self insetForSectionAtIndex:section];
         } else {
             sectionInset = self.sectionInset;
         }
-        
+        top += sectionInset.top;
+      
         // Set minimum inter item spacing
         // If protocol minimumInteritemSpacingForSectionAtIndex not implement default is self.minimumInteritemSpacing
         CGFloat minimumInteritemSpacing;
@@ -224,16 +226,15 @@ const NSInteger unionSize = 20;
         } else {
             headerHeight = self.headerHeight;
         }
-        
+
         if (headerHeight > 0) {
             attributes = [UICollectionViewLayoutAttributes layoutAttributesForSupplementaryViewOfKind:KindSectionHeader withIndexPath:[NSIndexPath indexPathForItem:0 inSection:section]];
-            attributes.frame = CGRectMake(_sectionInset.left, top, self.collectionView.frame.size.width - _sectionInset.left - _sectionInset.right, headerHeight);
+            attributes.frame = CGRectMake(sectionInset.left, top, self.collectionView.frame.size.width - sectionInset.left - sectionInset.right, headerHeight);
             self.headersAttribute[@(section)] = attributes;
             [self.allItemAttributes addObject:attributes];
-            top = CGRectGetMaxY(attributes.frame);
+            top = CGRectGetMaxY(attributes.frame) + minimumInteritemSpacing;
         }
     
-        top += sectionInset.top;
         for (idx = 0; idx < columnCount; idx++) {
             self.columnHeights[idx] = @(top);
         }
@@ -252,7 +253,6 @@ const NSInteger unionSize = 20;
             if (itemSize.height > 0 && itemSize.width > 0) {
                 itemHeight = floorf(itemSize.height * itemWidth / itemSize.width);
             }
-            
             attributes = [UICollectionViewLayoutAttributes layoutAttributesForCellWithIndexPath:indexPath];
             attributes.frame = CGRectMake(xOffset, yOffset, itemWidth, itemHeight);
             [itemAttributes addObject:attributes];
@@ -265,28 +265,29 @@ const NSInteger unionSize = 20;
         // SECTION FOOTER
         CGFloat footerHeight;
         NSUInteger columnIndex = [self longestColumnIndex];
-        top = [self.columnHeights[columnIndex] floatValue] - minimumInteritemSpacing + sectionInset.bottom;
-        
+        top = [self.columnHeights[columnIndex] floatValue] - minimumInteritemSpacing;
+      
         if ([self.delegate respondsToSelector:@selector(collectionView:layout:heightForFooterInSection:)]) {
             footerHeight = [self.delegate collectionView:self.collectionView layout:self heightForFooterInSection:section];
         } else {
             footerHeight = self.footerHeight;
         }
-        
+
         if (footerHeight > 0) {
+
             attributes = [UICollectionViewLayoutAttributes layoutAttributesForSupplementaryViewOfKind:KindSectionFooter withIndexPath:[NSIndexPath indexPathForItem:0 inSection:section]];
-            attributes.frame = CGRectMake(_sectionInset.left, top, self.collectionView.frame.size.width - _sectionInset.left - _sectionInset.right, footerHeight);
+            attributes.frame = CGRectMake(sectionInset.left, top, self.collectionView.frame.size.width - sectionInset.left - sectionInset.right, footerHeight);
             
             self.footersAttribute[@(section)] = attributes;
             [self.allItemAttributes addObject:attributes];
             
             top = CGRectGetMaxY(attributes.frame);
         }
-        
+
+        top += sectionInset.bottom;
         for (idx = 0; idx < columnCount; idx++) {
             self.columnHeights[idx] = @(top);
         }
-        
     }
     
     idx = 0;
