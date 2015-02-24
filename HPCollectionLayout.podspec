@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
   s.name         = "HPCollectionLayout"
-  s.version      = "1.0.0"
+  s.version      = "1.0.1"
   s.summary      = "HPCollectionLayout is a custom cocoa collectionlayout"
   s.homepage     = "http://facebook.com/huyphams"
   # s.screenshots  = "www.example.com/screenshots_1.gif", "www.example.com/screenshots_2.gif"

@@ -68,10 +68,26 @@ const NSInteger unionSize = 20;
 }
 
 - (void)setSectionInset:(UIEdgeInsets)sectionInset {
-    
+  
     if (!UIEdgeInsetsEqualToEdgeInsets(_sectionInset, sectionInset)) {
         _sectionInset = sectionInset;
+       [self invalidateLayout];
+    }
+}
+
+- (void)setHeaderInset:(UIEdgeInsets)headerInset {
+  
+    if (!UIEdgeInsetsEqualToEdgeInsets(_headerInset, headerInset)) {
+        _headerInset = headerInset;
         [self invalidateLayout];
+    }
+}
+
+- (void)setFooterInset:(UIEdgeInsets)footerInset {
+  
+    if (!UIEdgeInsetsEqualToEdgeInsets(_footerInset, footerInset)) {
+      _footerInset = footerInset;
+      [self invalidateLayout];
     }
 }
 
@@ -152,6 +168,8 @@ const NSInteger unionSize = 20;
     _headerHeight = 0;
     _footerHeight = 0;
     _sectionInset = UIEdgeInsetsZero;
+    _headerInset = UIEdgeInsetsZero;
+    _footerInset = UIEdgeInsetsZero;
 }
 
 - (instancetype)init {
@@ -190,13 +208,26 @@ const NSInteger unionSize = 20;
         // Set section inset
         // If protocol minimumInteritemSpacingForSectionAtIndex not implement default is self.sectionInset
         UIEdgeInsets sectionInset;
-  
+        UIEdgeInsets headerInset;
+        UIEdgeInsets footerInset;
+      
         if ([self.delegate respondsToSelector:@selector(collectionView:layout:insetForSectionAtIndex:)]) {
             sectionInset = [self.delegate collectionView:self.collectionView layout:self insetForSectionAtIndex:section];
         } else {
             sectionInset = self.sectionInset;
         }
-        top += sectionInset.top;
+        if ([self.delegate respondsToSelector:@selector(collectionView:layout:insetForHeaderAtIndex:)]) {
+            headerInset = [self.delegate collectionView:self.collectionView layout:self insetForHeaderAtIndex:section];
+        } else {
+            headerInset = self.headerInset;
+        }
+        if ([self.delegate respondsToSelector:@selector(collectionView:layout:insetForFooterAtIndex:)]) {
+            footerInset = [self.delegate collectionView:self.collectionView layout:self insetForFooterAtIndex:section];
+        } else {
+            footerInset = self.footerInset;
+        }
+
+        top += headerInset.top;
       
         // Set minimum inter item spacing
         // If protocol minimumInteritemSpacingForSectionAtIndex not implement default is self.minimumInteritemSpacing
@@ -229,11 +260,13 @@ const NSInteger unionSize = 20;
 
         if (headerHeight > 0) {
             attributes = [UICollectionViewLayoutAttributes layoutAttributesForSupplementaryViewOfKind:KindSectionHeader withIndexPath:[NSIndexPath indexPathForItem:0 inSection:section]];
-            attributes.frame = CGRectMake(sectionInset.left, top, self.collectionView.frame.size.width - sectionInset.left - sectionInset.right, headerHeight);
+            attributes.frame = CGRectMake(headerInset.left, top, self.collectionView.frame.size.width - headerInset.left - headerInset.right, headerHeight);
             self.headersAttribute[@(section)] = attributes;
             [self.allItemAttributes addObject:attributes];
             top = CGRectGetMaxY(attributes.frame) + minimumInteritemSpacing;
         }
+      
+        top += sectionInset.top + headerInset.bottom;
     
         for (idx = 0; idx < columnCount; idx++) {
             self.columnHeights[idx] = @(top);
@@ -265,7 +298,7 @@ const NSInteger unionSize = 20;
         // SECTION FOOTER
         CGFloat footerHeight;
         NSUInteger columnIndex = [self longestColumnIndex];
-        top = [self.columnHeights[columnIndex] floatValue] - minimumInteritemSpacing;
+        top = [self.columnHeights[columnIndex] floatValue] - minimumInteritemSpacing + footerInset.top;
       
         if ([self.delegate respondsToSelector:@selector(collectionView:layout:heightForFooterInSection:)]) {
             footerHeight = [self.delegate collectionView:self.collectionView layout:self heightForFooterInSection:section];
@@ -274,9 +307,8 @@ const NSInteger unionSize = 20;
         }
 
         if (footerHeight > 0) {
-
             attributes = [UICollectionViewLayoutAttributes layoutAttributesForSupplementaryViewOfKind:KindSectionFooter withIndexPath:[NSIndexPath indexPathForItem:0 inSection:section]];
-            attributes.frame = CGRectMake(sectionInset.left, top, self.collectionView.frame.size.width - sectionInset.left - sectionInset.right, footerHeight);
+            attributes.frame = CGRectMake(footerInset.left, top, self.collectionView.frame.size.width - footerInset.left - footerInset.right, footerHeight);
             
             self.footersAttribute[@(section)] = attributes;
             [self.allItemAttributes addObject:attributes];
@@ -284,7 +316,7 @@ const NSInteger unionSize = 20;
             top = CGRectGetMaxY(attributes.frame);
         }
 
-        top += sectionInset.bottom;
+        top += sectionInset.bottom + footerInset.bottom;
         for (idx = 0; idx < columnCount; idx++) {
             self.columnHeights[idx] = @(top);
         }

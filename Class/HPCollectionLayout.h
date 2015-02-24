@@ -22,7 +22,6 @@ extern NSString *const KindSectionFooter;
  - Config header height
  
  */
-
 - (CGFloat)collectionView:(UICollectionView *)collectionView
                    layout:(UICollectionViewLayout *)collectionViewLayout
  heightForHeaderInSection:(NSInteger)section;
@@ -32,7 +31,6 @@ extern NSString *const KindSectionFooter;
  - Config footer height
  
  */
-
 - (CGFloat)collectionView:(UICollectionView *)collectionView
                    layout:(UICollectionViewLayout *)collectionViewLayout
  heightForFooterInSection:(NSInteger)section;
@@ -42,17 +40,22 @@ extern NSString *const KindSectionFooter;
  - Config inset for Section At index path
  
  */
-
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView
                         layout:(UICollectionViewLayout *)collectionViewLayout
         insetForSectionAtIndex:(NSInteger)section;
 
+- (UIEdgeInsets)collectionView:(UICollectionView *)collectionView
+                        layout:(UICollectionViewLayout *)collectionViewLayout
+        insetForHeaderAtIndex:(NSInteger)section;
+
+- (UIEdgeInsets)collectionView:(UICollectionView *)collectionView
+                        layout:(UICollectionViewLayout *)collectionViewLayout
+         insetForFooterAtIndex:(NSInteger)section;
 /**
  
  - Config inset for minimum items spacing
  
  */
-
 - (CGFloat)collectionView:(UICollectionView *)collectionView
                    layout:(UICollectionViewLayout *)collectionViewLayout
 minimumInteritemSpacingForSectionAtIndex:(NSInteger)section;
@@ -64,17 +67,15 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger)section;
  - Config Size for item at index path
  
  */
-
 - (CGSize)collectionView:(UICollectionView *)collectionView
                   layout:(UICollectionViewLayout *)collectionViewLayout
   sizeForItemAtIndexPath:(NSIndexPath *)indexPath;
 
 /**
  
- - Config number of column in setion
+ - Config number of column in section
  
  */
-
 - (NSInteger)collectionView:(UICollectionView *)collectionView
                      layout:(UICollectionViewLayout *)collectionViewLayout
    numberOfColumnForSection:(NSInteger)section;
@@ -85,26 +86,23 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger)section;
 
 // Colum spacing
 // Default is 10
-
 @property (nonatomic, assign) CGFloat minimumColumnSpacing;
 
 // Item spacing
 // Default is 10
-
 @property (nonatomic, assign) CGFloat minimumInteritemSpacing;
 
 // Section Inset
-
 @property (nonatomic, assign) UIEdgeInsets sectionInset;
+@property (nonatomic, assign) UIEdgeInsets headerInset;
+@property (nonatomic, assign) UIEdgeInsets footerInset;
 
 // Header height
 // Default is 0
-
 @property (nonatomic, assign) CGFloat headerHeight;
 
 // Footer height
 // Default is 0
-
 @property (nonatomic, assign) CGFloat footerHeight;
 
 @end
