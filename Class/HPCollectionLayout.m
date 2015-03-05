@@ -248,8 +248,8 @@ const NSInteger unionSize = 20;
         }
 
         // Column width
-        CGFloat itemWidth = floorf((width - (columnCount - 1) * self.minimumColumnSpacing) / columnCount);
-
+        CGFloat itemWidth = ((width - (columnCount - 1) * self.minimumColumnSpacing) / columnCount);
+      
         // SECTION HEADER
         CGFloat headerHeight;
         if ([self.delegate respondsToSelector:@selector(collectionView:layout:heightForHeaderInSection:)]) {
