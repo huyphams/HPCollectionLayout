@@ -9,45 +9,43 @@
 #import "ViewController.h"
 #import "HPCollectionLayout.h"
 
-@interface ViewController () <HPCollectionLayoutDelegate, UICollectionViewDataSource, UICollectionViewDelegate>
+@interface ViewController ()
+    <HPCollectionLayoutDelegate,
+    UICollectionViewDataSource,
+    UICollectionViewDelegate>
 
 @property (nonatomic, strong) UICollectionView *collectionView;
 @property (nonatomic, strong) HPCollectionLayout *collectionViewLayout;
 
 @end
 
-@implementation ViewController {
-    UIView *_headerView;
-}
-
-- (UIView *)headerView {
-    if (!_headerView) {
-        _headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 80)];
-    }
-    [_headerView setBackgroundColor:[UIColor whiteColor]];
-    return _headerView;
-}
+@implementation ViewController
 
 - (HPCollectionLayout *)collectionViewLayout {
     if (!_collectionViewLayout) {
         _collectionViewLayout = [[HPCollectionLayout alloc] init];
-        _collectionViewLayout.sectionInset = UIEdgeInsetsMake( 0, 10, 0, 10);
+        _collectionViewLayout.sectionInset = UIEdgeInsetsMake( 10, 10, 10, 10);
     }
     return _collectionViewLayout;
 }
 
 - (UICollectionView *)collectionView {
     if (!_collectionView) {
-        _collectionView = [[UICollectionView alloc] initWithFrame:self.view.bounds collectionViewLayout:self.collectionViewLayout];
-        [_collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:@"Block"];
+        _collectionView = [[UICollectionView alloc] initWithFrame:self.view.bounds
+                                             collectionViewLayout:self.collectionViewLayout];
+        [_collectionView registerClass:[UICollectionViewCell class]
+            forCellWithReuseIdentifier:@"Block"];
         [_collectionView setDataSource:self];
         [_collectionView setDelegate:self];
-        [_collectionView registerClass:[UICollectionReusableView class] forSupplementaryViewOfKind:KindSectionHeader withReuseIdentifier:@"header"];
+        [_collectionView registerClass:[UICollectionReusableView class]
+            forSupplementaryViewOfKind:KindSectionHeader
+                   withReuseIdentifier:@"header"];
     }
     return _collectionView;
 }
 
-- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
+- (NSInteger)collectionView:(UICollectionView *)collectionView
+     numberOfItemsInSection:(NSInteger)section {
     return 10;
 }
 
@@ -55,34 +53,49 @@
     return 2;
 }
 
-- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout heightForHeaderInSection:(NSInteger)section {
+- (CGFloat)collectionView:(UICollectionView *)collectionView
+                   layout:(UICollectionViewLayout *)collectionViewLayout
+ heightForHeaderInSection:(NSInteger)section {
     return 90;
 }
 
-- (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
+- (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView
+           viewForSupplementaryElementOfKind:(NSString *)kind
+                                 atIndexPath:(NSIndexPath *)indexPath {
     UICollectionReusableView *reusableView = nil;
     if ([kind isEqualToString:KindSectionHeader]) {
-        reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:KindSectionHeader withReuseIdentifier:@"header" forIndexPath:indexPath];
+        reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:KindSectionHeader
+                                                          withReuseIdentifier:@"header"
+                                                                 forIndexPath:indexPath];
         [reusableView setBackgroundColor:[UIColor purpleColor]];
-     //   [reusableView addSubview:self.headerView];
     }
     return reusableView;
 }
 
-- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"Block" forIndexPath:indexPath];
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView
+                  cellForItemAtIndexPath:(NSIndexPath *)indexPath {
+    UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"Block"
+                                                                           forIndexPath:indexPath];
     [cell setBackgroundColor:[self randomColor]];
     return cell;
 }
 
 
-- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
+- (CGSize)collectionView:(UICollectionView *)collectionView
+                  layout:(UICollectionViewLayout *)collectionViewLayout
+  sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
     int w = arc4random() % 100+100;
     int h = arc4random() % 100+100;
     CGSize size = CGSizeMake(w, h);
     return size;
 }
 
+- (NSInteger)collectionView:(UICollectionView *)collectionView
+                     layout:(UICollectionViewLayout *)collectionViewLayout
+   numberOfColumnForSection:(NSInteger)section {
+    
+    return 2;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -94,7 +107,6 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
 
 - (UIColor*) randomColor{
     int r = arc4random() % 255;
