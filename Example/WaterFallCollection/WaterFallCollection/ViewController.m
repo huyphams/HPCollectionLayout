@@ -24,6 +24,9 @@
 - (HPCollectionLayout *)collectionViewLayout {
     if (!_collectionViewLayout) {
         _collectionViewLayout = [[HPCollectionLayout alloc] init];
+        _collectionViewLayout.headerInset = UIEdgeInsetsMake(0, 10, 0, 10);
+        _collectionViewLayout.minimumColumnSpacing = 10;
+        _collectionViewLayout.minimumInteritemSpacing = 10;
         _collectionViewLayout.sectionInset = UIEdgeInsetsMake( 0, 10, 10, 10);
     }
     return _collectionViewLayout;
@@ -52,7 +55,7 @@
 }
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
-    return 2;
+    return 3;
 }
 
 - (CGFloat)collectionView:(UICollectionView *)collectionView
@@ -96,7 +99,7 @@
                      layout:(UICollectionViewLayout *)collectionViewLayout
    numberOfColumnForSection:(NSInteger)section {
     
-    return 2;
+    return 3 - section;
 }
 
 - (void)viewDidLoad {
