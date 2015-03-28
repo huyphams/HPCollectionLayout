@@ -24,7 +24,7 @@
 - (HPCollectionLayout *)collectionViewLayout {
     if (!_collectionViewLayout) {
         _collectionViewLayout = [[HPCollectionLayout alloc] init];
-        _collectionViewLayout.sectionInset = UIEdgeInsetsMake( 10, 10, 10, 10);
+        _collectionViewLayout.sectionInset = UIEdgeInsetsMake( 0, 10, 10, 10);
     }
     return _collectionViewLayout;
 }
@@ -33,6 +33,7 @@
     if (!_collectionView) {
         _collectionView = [[UICollectionView alloc] initWithFrame:self.view.bounds
                                              collectionViewLayout:self.collectionViewLayout];
+        [_collectionView setContentInset:UIEdgeInsetsMake(20, 0, 10, 0)];
         [_collectionView registerClass:[UICollectionViewCell class]
             forCellWithReuseIdentifier:@"Block"];
         [_collectionView setDataSource:self];
@@ -40,6 +41,7 @@
         [_collectionView registerClass:[UICollectionReusableView class]
             forSupplementaryViewOfKind:KindSectionHeader
                    withReuseIdentifier:@"header"];
+        [_collectionView setBackgroundColor:[UIColor whiteColor]];
     }
     return _collectionView;
 }
