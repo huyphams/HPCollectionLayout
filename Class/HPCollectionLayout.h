@@ -60,6 +60,15 @@ extern NSString *const KindSectionFooter;
                    layout:(UICollectionViewLayout *)collectionViewLayout
 minimumInteritemSpacingForSectionAtIndex:(NSInteger)section;
 
+/**
+ 
+ - Config inset for minimum items spacing
+ 
+ */
+- (CGFloat)collectionView:(UICollectionView *)collectionView
+                   layout:(UICollectionViewLayout *)collectionViewLayout
+minimumColumnSpacingForSectionAtIndex:(NSInteger)section;
+
 @required
 
 /**

@@ -97,7 +97,16 @@ const NSInteger unionSize = 20;
     NSInteger columnCount = [self.delegate collectionView:self.collectionView
                                                    layout:self
                                  numberOfColumnForSection:section];
-    return floorf((width - (columnCount - 1) * self.minimumColumnSpacing) / columnCount);
+  
+    CGFloat minimumColumnSpacing;
+    if ([self.delegate respondsToSelector:@selector(collectionView:layout:minimumColumnSpacingForSectionAtIndex:)]) {
+        minimumColumnSpacing = [self.delegate collectionView:self.collectionView
+                                                      layout:self
+                       minimumColumnSpacingForSectionAtIndex:section];
+    } else {
+        minimumColumnSpacing = self.minimumColumnSpacing;
+    }
+    return floorf((width - (columnCount - 1) * minimumColumnSpacing) / columnCount);
 }
 
 #pragma mark - Private Accessors
@@ -239,9 +248,20 @@ const NSInteger unionSize = 20;
         for (idx = 0; idx < columnCount; idx++) {
             [self.columnHeights addObject:@(0)];
         }
+      
+        // Set minimum column item spacing
+        // If protocol minimumColumnSpacingForSectionAtIndex not implement default is self.minimumColumnSpacing
+        CGFloat minimumColumnSpacing;
+        if ([self.delegate respondsToSelector:@selector(collectionView:layout:minimumColumnSpacingForSectionAtIndex:)]) {
+            minimumColumnSpacing = [self.delegate collectionView:self.collectionView
+                                                          layout:self
+                           minimumColumnSpacingForSectionAtIndex:section];
+        } else {
+            minimumColumnSpacing = self.minimumColumnSpacing;
+        }
 
         // Column width
-        CGFloat itemWidth = ((width - (columnCount - 1) * self.minimumColumnSpacing) / columnCount);
+        CGFloat itemWidth = ((width - (columnCount - 1) * minimumColumnSpacing) / columnCount);
       
         // SECTION HEADER
         CGFloat headerHeight;
@@ -274,7 +294,7 @@ const NSInteger unionSize = 20;
         for (idx = 0; idx < itemCount; idx++) {
             NSIndexPath *indexPath = [NSIndexPath indexPathForItem:idx inSection:section];
             NSUInteger columnIndex = [self nextColumnIndexForItem:idx];
-            CGFloat xOffset = sectionInset.left + (itemWidth + self.minimumColumnSpacing) * columnIndex;
+            CGFloat xOffset = sectionInset.left + (itemWidth + minimumColumnSpacing) * columnIndex;
             CGFloat yOffset = [self.columnHeights[columnIndex] floatValue];
             CGSize itemSize = [self.delegate collectionView:self.collectionView
                                                      layout:self
